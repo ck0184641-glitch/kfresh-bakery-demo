@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFresh Bakery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #fff8f0; }
+        nav { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .logo { color: #f5c518; font-size: 28px; font-weight: bold; text-decoration: none; }
+        .nav-links a { color: white; margin: 0 15px; text-decoration: none; font-size: 16px; }
+        .nav-links a:hover { color: #f5c518; }
+        .nav-btn { background: #f5c518; color: #1a3a5c !important; padding: 8px 20px; border-radius: 20px; font-weight: bold !important; }
+        footer { background: #1a3a5c; color: white; text-align: center; padding: 30px; margin-top: 50px; }
+        footer a { color: #f5c518; text-decoration: none; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/" class="logo">🎂 KFresh Bakery</a>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/products">Products</a>
+        <a href="/faq">FAQ</a>
+        <a href="/contact">Contact</a>
+        <a href="/cart" class="nav-btn">🛒 Cart</a>
+    </div>
+</nav>
+{% block content %}{% endblock %}
+<footer>
+    <p>🎂 KFresh Bakery — Baking Happiness Daily</p>
+    <p style="margin-top:10px">📍 Kenya &nbsp;|&nbsp; 📞 0117426087 &nbsp;|&nbsp; <a href="https://wa.me/254117426087">💬 WhatsApp</a></p>
+    <p style="margin-top:10px; color:#aaa">© 2026 KFresh Bakery. All rights reserved.</p>
+</footer>
+</body>
+</html>

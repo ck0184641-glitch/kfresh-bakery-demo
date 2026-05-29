@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .contact-hero { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); color: white; text-align: center; padding: 80px 20px; }
+    .contact-hero h1 { font-size: 50px; margin-bottom: 15px; }
+    .contact-section { max-width: 900px; margin: 60px auto; padding: 0 20px; }
+    .contact-grid { display: flex; gap: 30px; flex-wrap: wrap; justify-content: center; }
+    .contact-card { background: white; border-radius: 15px; padding: 40px; flex: 1; min-width: 250px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
+    .contact-card .icon { font-size: 50px; margin-bottom: 15px; }
+    .contact-card h3 { color: #1a3a5c; font-size: 22px; margin-bottom: 10px; }
+    .contact-card p { color: #555; font-size: 16px; }
+    .contact-card a { color: #0d6b8a; text-decoration: none; font-weight: bold; }
+</style>
+<div class="contact-hero">
+    <h1>📞 Contact Us</h1>
+    <p>We'd love to hear from you!</p>
+</div>
+<div class="contact-section">
+    <div class="contact-grid">
+        <div class="contact-card"><div class="icon">📞</div><h3>Call Us</h3><p>0117426087</p></div>
+        <div class="contact-card"><div class="icon">💬</div><h3>WhatsApp</h3><p><a href="https://wa.me/254117426087">Chat with us on WhatsApp</a></p></div>
+        <div class="contact-card"><div class="icon">📍</div><h3>Location</h3><p>Kenya — Delivery Nationwide</p></div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .faq-hero { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); color: white; text-align: center; padding: 80px 20px; }
+    .faq-hero h1 { font-size: 50px; }
+    .faq-section { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+    .faq-item { background: white; border-radius: 15px; padding: 30px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .faq-item h3 { color: #1a3a5c; font-size: 20px; margin-bottom: 10px; }
+    .faq-item p { color: #555; font-size: 16px; line-height: 1.7; }
+</style>
+<div class="faq-hero">
+    <h1>❓ FAQ</h1>
+    <p>Frequently Asked Questions</p>
+</div>
+<div class="faq-section">
+    <div class="faq-item"><h3>🚚 Do you deliver?</h3><p>Yes! We deliver across Kenya. Contact us on WhatsApp to arrange delivery.</p></div>
+    <div class="faq-item"><h3>📦 How do I place an order?</h3><p>Order through our website or WhatsApp us on 0117426087.</p></div>
+    <div class="faq-item"><h3>💳 What payment methods do you accept?</h3><p>We accept M-Pesa, Cash on Delivery, and Bank Transfer.</p></div>
+    <div class="faq-item"><h3>🎂 Can I order a custom cake?</h3><p>Yes! We make custom cakes for all occasions. Contact us at least 3 days in advance.</p></div>
+    <div class="faq-item"><h3>⏰ How fresh are your products?</h3><p>All products are baked fresh every morning. We do not sell day-old products.</p></div>
+</div>
+{% endblock %}

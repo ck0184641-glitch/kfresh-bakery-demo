@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFresh Bakery — Manager Login</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #1a3a5c, #0d6b8a); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: white; border-radius: 20px; padding: 50px 40px; width: 400px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+        .logo { font-size: 50px; margin-bottom: 10px; }
+        h1 { color: #1a3a5c; font-size: 28px; margin-bottom: 5px; }
+        p { color: #666; margin-bottom: 30px; font-size: 16px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; color: #1a3a5c; font-weight: bold; margin-bottom: 8px; }
+        input { width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; text-align: center; letter-spacing: 2px; }
+        input:focus { border-color: #0d6b8a; outline: none; }
+        .login-btn { background: #1a3a5c; color: white; padding: 15px; border: none; border-radius: 10px; width: 100%; font-size: 20px; cursor: pointer; margin-top: 10px; transition: background 0.3s; }
+        .login-btn:hover { background: #0d6b8a; }
+        .error-box { background: #f8d7da; border: 2px solid #dc3545; border-radius: 10px; padding: 15px; color: #721c24; margin-bottom: 20px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <div class="logo">🎂</div>
+        <h1>KFresh Bakery</h1>
+        <p>Manager Dashboard Login</p>
+
+        {% if error %}
+        <div class="error-box">❌ Wrong password! Try again.</div>
+        {% endif %}
+
+        <form action="/login" method="POST">
+            <div class="form-group">
+                <label>Manager Password</label>
+                <input type="password" name="password" placeholder="••••••••" required autofocus>
+            </div>
+            <button type="submit" class="login-btn">🔐 Login</button>
+        </form>
+    </div>
+</body>
+</html>

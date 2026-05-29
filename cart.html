@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .cart-hero { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); color: white; text-align: center; padding: 60px 20px; }
+    .cart-hero h1 { font-size: 50px; }
+    .cart-container { max-width: 800px; margin: 60px auto; padding: 0 20px; }
+    .cart-box { background: white; border-radius: 15px; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .cart-box h2 { color: #1a3a5c; font-size: 28px; margin-bottom: 25px; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+    .cart-item h3 { color: #1a3a5c; font-size: 18px; }
+    .cart-item .item-price { color: #f5c518; font-weight: bold; font-size: 18px; }
+    .qty-controls { display: flex; align-items: center; gap: 10px; }
+    .qty-btn { background: #1a3a5c; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+    .qty-num { font-size: 18px; font-weight: bold; color: #1a3a5c; min-width: 20px; text-align: center; }
+    .remove-btn { background: #dc3545; color: white; border: none; padding: 5px 12px; border-radius: 10px; cursor: pointer; font-size: 13px; }
+    .cart-total { margin-top: 20px; padding-top: 20px; border-top: 3px solid #f5c518; }
+    .total-row { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: bold; color: #1a3a5c; margin-bottom: 15px; }
+    .delivery-select { border: 2px solid #ddd; padding: 8px 12px; border-radius: 8px; font-size: 16px; color: #1a3a5c; cursor: pointer; }
+    .grand-total-row { display: flex; justify-content: space-between; font-size: 24px; font-weight: bold; color: #f5c518; border-top: 2px solid #eee; padding-top: 15px; margin-top: 5px; }
+    .checkout-btn { background: #1a3a5c; color: white; padding: 15px 40px; border: none; border-radius: 30px; width: 100%; font-size: 20px; cursor: pointer; margin-top: 20px; text-decoration: none; display: block; text-align: center; }
+    .checkout-btn:hover { background: #0d6b8a; }
+    .empty-cart { text-align: center; padding: 40px; }
+    .empty-cart p { color: #666; font-size: 18px; margin-bottom: 20px; }
+    .shop-btn { background: #f5c518; color: #1a3a5c; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 18px; font-weight: bold; display: inline-block; }
+</style>
+
+<div class="cart-hero">
+    <h1>🛒 Your Cart</h1>
+    <p>Review your order before checkout</p>
+</div>
+
+<div class="cart-container">
+    <div class="cart-box">
+        <h2>Your Items</h2>
+        <div id="cartItems"></div>
+
+        <div id="cartTotal" class="cart-total" style="display:none;">
+            <div class="total-row">
+                <span>Subtotal:</span>
+                <span id="subtotal">Ksh 0</span>
+            </div>
+            <div class="total-row">
+                <span>Delivery:</span>
+                <select id="deliveryOption" onchange="updateTotal()" class="delivery-select">
+                    <option value="0">🏃 Pickup — Free</option>
+                    <option value="200">🚚 Delivery — Ksh 200</option>
+                </select>
+            </div>
+            <div class="grand-total-row">
+                <span>Total:</span>
+                <span id="grandTotal">Ksh 0</span>
+            </div>
+            <a href="/checkout" class="checkout-btn" onclick="saveCartForCheckout()">Proceed to Checkout →</a>
+        </div>
+
+        <div id="emptyCart" class="empty-cart">
+            <div style="font-size:80px;">🛒</div>
+            <p>Your cart is empty!</p>
+            <a href="/products" class="shop-btn">Browse Products</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem('kfreshCart') || '[]');
+    let cartItems = document.getElementById('cartItems');
+    let cartTotal = document.getElementById('cartTotal');
+    let emptyCart = document.getElementById('emptyCart');
+
+    if (cart.length === 0) {
+        emptyCart.style.display = 'block';
+        cartTotal.style.display = 'none';
+        return;
+    }
+
+    emptyCart.style.display = 'none';
+    cartTotal.style.display = 'block';
+
+    let html = '';
+    cart.forEach((item, index) => {
+        let itemTotal = item.price * item.qty;
+        html += `
+        <div class="cart-item">
+            <div>
+                <h3>${item.name}</h3>
+                <div class="item-price">Ksh ${item.price.toLocaleString()} each</div>
+            </div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
+                <span class="qty-num">${item.qty}</span>
+                <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+            </div>
+            <div class="item-price">Ksh ${itemTotal.toLocaleString()}</div>
+        </div>`;
+    });
+
+    cartItems.innerHTML = html;
+    updateTotal();
+}
+
+function updateTotal() {
+    let cart = JSON.parse(localStorage.getItem('kfreshCart') || '[]');
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let delivery = parseInt(document.getElementById('deliveryOption').value);
+    let total = subtotal + delivery;
+    document.getElementById('subtotal').textContent = 'Ksh ' + subtotal.toLocaleString();
+    document.getElementById('grandTotal').textContent = 'Ksh ' + total.toLocaleString();
+}
+
+function changeQty(index, change) {
+    let cart = JSON.parse(localStorage.getItem('kfreshCart') || '[]');
+    cart[index].qty += change;
+    if (cart[index].qty <= 0) cart.splice(index, 1);
+    localStorage.setItem('kfreshCart', JSON.stringify(cart));
+    loadCart();
+}
+
+function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem('kfreshCart') || '[]');
+    cart.splice(index, 1);
+    localStorage.setItem('kfreshCart', JSON.stringify(cart));
+    loadCart();
+}
+
+function saveCartForCheckout() {
+    let cart = JSON.parse(localStorage.getItem('kfreshCart') || '[]');
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let delivery = parseInt(document.getElementById('deliveryOption').value);
+    let total = subtotal + delivery;
+    let deliveryText = delivery === 0 ? 'Pickup (Free)' : 'Delivery (Ksh 200)';
+    localStorage.setItem('kfreshTotal', total);
+    localStorage.setItem('kfreshDelivery', deliveryText);
+}
+
+loadCart();
+</script>
+{% endblock %}

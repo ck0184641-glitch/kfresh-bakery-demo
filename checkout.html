@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .checkout-hero { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); color: white; text-align: center; padding: 60px 20px; }
+    .checkout-hero h1 { font-size: 50px; }
+    .checkout-container { max-width: 750px; margin: 60px auto; padding: 0 20px; }
+    .form-box { background: white; border-radius: 15px; padding: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px; }
+    .form-box h2 { color: #1a3a5c; font-size: 26px; margin-bottom: 25px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; color: #1a3a5c; font-size: 16px; margin-bottom: 8px; font-weight: bold; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #0d6b8a; outline: none; }
+    .mpesa-box { background: #e8f5e9; border: 2px solid #28a745; border-radius: 15px; padding: 30px; margin-bottom: 30px; text-align: center; }
+    .mpesa-box h2 { color: #155724; font-size: 24px; margin-bottom: 20px; }
+    .mpesa-steps { text-align: left; margin: 20px 0; }
+    .mpesa-steps p { font-size: 16px; color: #155724; padding: 10px; background: white; border-radius: 8px; margin-bottom: 8px; }
+    .mpesa-amount { font-size: 35px; font-weight: bold; color: #155724; margin: 15px 0; }
+    .mpesa-number { font-size: 28px; font-weight: bold; color: #1a3a5c; margin: 10px 0; }
+    .mpesa-name { font-size: 18px; color: #555; margin-bottom: 15px; }
+    .submit-btn { background: #1a3a5c; color: white; padding: 15px 40px; border: none; border-radius: 30px; width: 100%; font-size: 20px; cursor: pointer; margin-top: 10px; }
+    .submit-btn:hover { background: #0d6b8a; }
+    .success-box { background: #d4edda; border: 2px solid #28a745; border-radius: 15px; padding: 35px; text-align: center; color: #155724; margin-bottom: 20px; }
+    .success-box h2 { font-size: 28px; margin: 15px 0; }
+    .success-box p { font-size: 17px; margin-bottom: 10px; line-height: 1.6; }
+    .order-code-box { background: #1a3a5c; color: #f5c518; font-size: 35px; font-weight: bold; padding: 20px; border-radius: 15px; margin: 20px 0; letter-spacing: 5px; }
+    .error-box { background: #f8d7da; border: 2px solid #dc3545; border-radius: 10px; padding: 20px; text-align: center; color: #721c24; font-size: 18px; margin-bottom: 20px; }
+    .summary-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 15px; }
+    .summary-total { display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: #1a3a5c; border-top: 2px solid #ddd; padding-top: 10px; margin-top: 10px; }
+    .pickup-info { background: #fff3cd; border: 2px solid #f5c518; border-radius: 10px; padding: 15px; margin-bottom: 10px; color: #856404; font-size: 15px; display: none; }
+    .warning-box { background: #fff3cd; border: 2px solid #f5c518; border-radius: 10px; padding: 15px; color: #856404; font-size: 15px; margin-top: 15px; }
+</style>
+
+<div class="checkout-hero">
+    <h1>💳 Checkout</h1>
+    <p>Complete your order below</p>
+</div>
+
+<div class="checkout-container">
+
+    {% if success %}
+    <div class="success-box">
+        <div style="font-size:60px;">🎉</div>
+        <h2>Order Placed Successfully!</h2>
+        <p>Your unique order code is:</p>
+        <div class="order-code-box">{{ order_code }}</div>
+        <p><strong>⚠️ Save this code! You will need it to collect your order.</strong></p>
+        <div id="successMessage"></div>
+        <div class="warning-box">
+            📋 When you arrive at the station, show this code to the manager: <strong>{{ order_code }}</strong>
+        </div>
+        <p style="margin-top:15px;">📞 <strong>0117426087</strong> | 💬 <a href="https://wa.me/254117426087" style="color:#0d6b8a;">WhatsApp Us</a></p>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="error-box">❌ Something went wrong. Please WhatsApp us: 0117426087</div>
+    {% endif %}
+
+    <div class="form-box">
+        <h2>📋 Order Summary</h2>
+        <div id="orderSummaryItems"></div>
+        <div class="summary-total">
+            <span>Total:</span>
+            <span id="orderTotal">Ksh 0</span>
+        </div>
+    </div>
+
+    <div class="mpesa-box">
+        <h2>📱 Pay via M-Pesa First</h2>
+        <p style="color:#555; margin-bottom:15px;">Please send payment before placing your order:</p>
+        <div class="mpesa-amount" id="mpesaAmount">Ksh 0</div>
+        <div class="mpesa-number">📲 0117426087</div>
+        <div class="mpesa-name">Clinton Kariuki (KFresh Bakery Demo)</div>
+        <div class="mpesa-steps">
+            <p>1️⃣ Go to M-Pesa → Send Money</p>
+            <p>2️⃣ Enter number: <strong>0117426087</strong></p>
+            <p>3️⃣ Enter amount: <strong id="mpesaAmount2">Ksh 0</strong></p>
+            <p>4️⃣ Enter your PIN and confirm</p>
+            <p>5️⃣ Copy the <strong>M-Pesa transaction code</strong> you receive</p>
+            <p>6️⃣ Fill the form below and paste the code</p>
+        </div>
+    </div>
+
+    <div class="form-box">
+        <h2>📦 Your Details</h2>
+        <form action="/submit-order" method="POST">
+            <input type="hidden" name="order_details" id="hiddenOrderDetails">
+            <input type="hidden" name="total" id="hiddenTotal">
+            <input type="hidden" name="delivery" id="hiddenDelivery">
+
+            <div class="form-group"><label>Full Name</label><input type="text" name="name" placeholder="Your full name" required></div>
+            <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="0700 000 000" required></div>
+            <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="your@email.com" required></div>
+
+            <div class="form-group" id="addressGroup">
+                <label>Delivery Address</label>
+                <textarea name="address" id="addressField" placeholder="Your delivery address in Kenya..." rows="3"></textarea>
+            </div>
+
+            <div class="pickup-info" id="pickupInfo">
+                📍 <strong>Pickup from Station</strong> — Your order will be ready for collection. We will contact you when it's ready!
+            </div>
+            <input type="hidden" name="address" id="pickupAddressField" value="Pickup from Station">
+
+            <div class="form-group">
+                <label>✅ M-Pesa Transaction Code</label>
+                <input type="text" name="mpesa_code" placeholder="e.g. QJK7XT5RPL" required style="border-color:#28a745; font-size:20px; font-weight:bold; letter-spacing:2px;">
+            </div>
+            <div class="form-group"><label>Special Instructions (Optional)</label><textarea name="instructions" placeholder="Any special instructions..." rows="3"></textarea></div>
+            <button type="submit" class="submit-btn">✅ Confirm Order & Payment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('kfreshCart') || '[]');
+let total = parseInt(localStorage.getItem('kfreshTotal') || '0');
+let deliveryText = localStorage.getItem('kfreshDelivery') || 'Pickup (Free)';
+let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+let deliveryCost = total - subtotal;
+let isPickup = deliveryText.includes('Pickup');
+
+let summaryHTML = '';
+cart.forEach(item => {
+    summaryHTML += `<div class="summary-item"><span>${item.name} x${item.qty}</span><span>Ksh ${(item.price * item.qty).toLocaleString()}</span></div>`;
+});
+summaryHTML += `<div class="summary-item"><span>${deliveryText}</span><span>Ksh ${deliveryCost.toLocaleString()}</span></div>`;
+document.getElementById('orderSummaryItems').innerHTML = summaryHTML;
+
+document.getElementById('orderTotal').textContent = 'Ksh ' + total.toLocaleString();
+document.getElementById('mpesaAmount').textContent = 'Ksh ' + total.toLocaleString();
+document.getElementById('mpesaAmount2').textContent = 'Ksh ' + total.toLocaleString();
+
+if (isPickup) {
+    document.getElementById('addressGroup').style.display = 'none';
+    document.getElementById('pickupInfo').style.display = 'block';
+    document.getElementById('addressField').removeAttribute('required');
+    document.getElementById('pickupAddressField').value = 'Pickup from Station';
+} else {
+    document.getElementById('addressGroup').style.display = 'block';
+    document.getElementById('pickupInfo').style.display = 'none';
+    document.getElementById('addressField').setAttribute('required', 'required');
+    document.getElementById('pickupAddressField').value = '';
+}
+
+let orderText = cart.map(item => `${item.name} x${item.qty} (Ksh ${item.price * item.qty})`).join(', ');
+document.getElementById('hiddenOrderDetails').value = orderText || 'No items selected';
+document.getElementById('hiddenTotal').value = 'Ksh ' + total.toLocaleString();
+document.getElementById('hiddenDelivery').value = deliveryText;
+
+{% if success %}
+let savedDelivery = localStorage.getItem('kfreshDelivery') || 'Pickup';
+let msg = '';
+if (savedDelivery.includes('Pickup')) {
+    msg = '<p>🏃 <strong>Your order is being prepared!</strong></p><p>We will call or WhatsApp you when your order is ready for pickup at our station.</p><p>Please bring your order code and M-Pesa transaction code as proof of payment.</p>';
+} else {
+    msg = '<p>🚚 <strong>Your order is confirmed!</strong></p><p>We will deliver to your address shortly. Our team will contact you to confirm delivery time.</p>';
+}
+document.getElementById('successMessage').innerHTML = msg;
+localStorage.removeItem('kfreshCart');
+localStorage.removeItem('kfreshTotal');
+localStorage.removeItem('kfreshDelivery');
+{% endif %}
+</script>
+{% endblock %}

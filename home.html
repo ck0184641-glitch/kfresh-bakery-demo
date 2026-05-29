@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .hero { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); color: white; text-align: center; padding: 100px 20px; }
+    .hero h1 { font-size: 55px; margin-bottom: 20px; }
+    .hero p { font-size: 22px; margin-bottom: 40px; }
+    .btn { background: #f5c518; color: #1a3a5c; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 20px; font-weight: bold; margin: 10px; display: inline-block; }
+    .btn-outline { background: transparent; border: 2px solid white; color: white; padding: 15px 40px; border-radius: 30px; text-decoration: none; font-size: 20px; margin: 10px; display: inline-block; }
+    .products-section { text-align: center; padding: 60px 20px; }
+    .products-section h2 { color: #1a3a5c; font-size: 40px; margin-bottom: 40px; }
+    .cards { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+    .card { background: white; border-radius: 15px; width: 250px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.3s; text-decoration: none; color: #1a3a5c; }
+    .card:hover { transform: translateY(-10px); }
+    .card img { width: 100%; height: 180px; object-fit: cover; }
+    .card-body { padding: 20px; }
+    .why-section { background: #1a3a5c; color: white; text-align: center; padding: 60px 20px; }
+    .why-section h2 { font-size: 40px; margin-bottom: 40px; }
+    .why-cards { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+    .why-card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; width: 200px; }
+    .why-card .icon { font-size: 40px; margin-bottom: 15px; }
+    .cta-section { text-align: center; padding: 80px 20px; background: #fff8f0; }
+    .cta-section h2 { color: #1a3a5c; font-size: 40px; margin-bottom: 20px; }
+</style>
+
+<div class="hero">
+    <h1>🎂 KFresh Bakery</h1>
+    <p>Baking Happiness Daily — Fresh, Delicious, Made With Love in Kenya</p>
+    <a href="/products" class="btn">Order Now</a>
+    <a href="/about" class="btn-outline">Learn More</a>
+</div>
+
+<div class="products-section">
+    <h2>Our Favourites</h2>
+    <div class="cards">
+        <a href="/products" class="card">
+            <img src="{{ url_for('static', filename='images/celebration_cake.jpeg') }}" alt="Celebration Cake">
+            <div class="card-body"><h3>Celebration Cakes</h3><p>Birthday, Wedding and More</p></div>
+        </a>
+        <a href="/products" class="card">
+            <img src="{{ url_for('static', filename='images/brown_bread.jpeg') }}" alt="Brown Bread">
+            <div class="card-body"><h3>Fresh Bread</h3><p>Mkate Halisi — Daily Fresh</p></div>
+        </a>
+        <a href="/products" class="card">
+            <img src="{{ url_for('static', filename='images/muffins_classic.jpeg') }}" alt="Muffins">
+            <div class="card-body"><h3>Muffins</h3><p>Classic, Red & Dark Varieties</p></div>
+        </a>
+        <a href="/products" class="card">
+            <img src="{{ url_for('static', filename='images/bakery_display_cake.jpeg') }}" alt="Catering">
+            <div class="card-body"><h3>Catering</h3><p>Events and Corporate</p></div>
+        </a>
+    </div>
+</div>
+
+<div class="why-section">
+    <h2>Why Choose KFresh?</h2>
+    <div class="why-cards">
+        <div class="why-card"><div class="icon">🌿</div><h3>Fresh Daily</h3><p>Baked fresh every morning</p></div>
+        <div class="why-card"><div class="icon">⭐</div><h3>Quality</h3><p>Premium ingredients only</p></div>
+        <div class="why-card"><div class="icon">🚚</div><h3>Delivery</h3><p>Fast delivery across Kenya</p></div>
+        <div class="why-card"><div class="icon">💝</div><h3>Made With Love</h3><p>Every bite tells a story</p></div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <h2>Ready to Order?</h2>
+    <p style="font-size:18px; margin-bottom:30px">Place your custom order today!</p>
+    <a href="/products" class="btn" style="background:#1a3a5c; color:white;">Browse Products</a>
+    <a href="https://wa.me/254117426087" class="btn">💬 WhatsApp Us</a>
+</div>
+{% endblock %}
