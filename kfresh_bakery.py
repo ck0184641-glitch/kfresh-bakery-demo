@@ -7,15 +7,15 @@ import json
 from datetime import datetime
 
 app = Flask(__name__,
-    template_folder=os.path.join(os.path.dirname(__file__), 'templates'),
-    static_folder=os.path.join(os.path.dirname(__file__), 'static'))
+    template_folder=os.path.dirname(os.path.abspath(__file__)),
+    static_folder=os.path.dirname(os.path.abspath(__file__)))
 
 app.secret_key = 'kfresh_secret_2024'
 
 MAKE_WEBHOOK = "https://hook.eu1.make.com/d6wxt51artyxnblpaiia60f45nvpmx4x"
 MANAGER_PASSWORD = "KFresh@2024"
 
-PRICES_FILE = os.path.join(os.path.dirname(__file__), 'prices.json')
+PRICES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'prices.json')
 
 def get_prices():
     if os.path.exists(PRICES_FILE):
