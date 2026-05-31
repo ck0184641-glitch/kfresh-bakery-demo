@@ -7,19 +7,66 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background: #fff8f0; }
-        nav { background: linear-gradient(135deg, #1a3a5c, #0d6b8a); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .logo { color: #f5c518; font-size: 28px; font-weight: bold; text-decoration: none; }
-        .nav-links a { color: white; margin: 0 15px; text-decoration: none; font-size: 16px; }
+
+        /* NAV */
+        nav {
+            background: linear-gradient(135deg, #1a3a5c, #0d6b8a);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .logo { color: #f5c518; font-size: 22px; font-weight: bold; text-decoration: none; }
+        .nav-links { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+        .nav-links a { color: white; margin: 0 8px; text-decoration: none; font-size: 14px; transition: color 0.3s; }
         .nav-links a:hover { color: #f5c518; }
-        .nav-btn { background: #f5c518; color: #1a3a5c !important; padding: 8px 20px; border-radius: 20px; font-weight: bold !important; }
-        footer { background: #1a3a5c; color: white; text-align: center; padding: 30px; margin-top: 50px; }
+        .nav-btn { background: #f5c518; color: #1a3a5c !important; padding: 6px 15px; border-radius: 20px; font-weight: bold !important; font-size: 13px !important; }
+
+        /* HAMBURGER MENU */
+        .hamburger { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .hamburger span { width: 25px; height: 3px; background: white; border-radius: 3px; transition: 0.3s; }
+
+        /* FOOTER */
+        footer { background: #1a3a5c; color: white; text-align: center; padding: 30px 20px; margin-top: 50px; }
         footer a { color: #f5c518; text-decoration: none; }
+        footer p { margin-bottom: 8px; font-size: 14px; }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .logo { font-size: 18px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #1a3a5c;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                padding: 20px;
+                gap: 15px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            }
+            .nav-links.open { display: flex; }
+            .nav-links a { font-size: 16px; margin: 0; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+            .nav-btn { text-align: center; border-radius: 10px; }
+        }
     </style>
 </head>
 <body>
+
 <nav>
     <a href="/" class="logo">🎂 KFresh Bakery</a>
-    <div class="nav-links">
+    <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
         <a href="/">Home</a>
         <a href="/about">About</a>
         <a href="/products">Products</a>
@@ -28,11 +75,21 @@
         <a href="/cart" class="nav-btn">🛒 Cart</a>
     </div>
 </nav>
+
 {% block content %}{% endblock %}
+
 <footer>
     <p>🎂 KFresh Bakery — Baking Happiness Daily</p>
-    <p style="margin-top:10px">📍 Kenya &nbsp;|&nbsp; 📞 0117426087 &nbsp;|&nbsp; <a href="https://wa.me/254117426087">💬 WhatsApp</a></p>
-    <p style="margin-top:10px; color:#aaa">© 2026 KFresh Bakery. All rights reserved.</p>
+    <p>📍 Kenya &nbsp;|&nbsp; 📞 0117426087 &nbsp;|&nbsp; <a href="https://wa.me/254117426087">💬 WhatsApp</a></p>
+    <p style="color:#aaa">© 2025 KFresh Bakery. All rights reserved.</p>
 </footer>
+
+<script>
+function toggleMenu() {
+    const nav = document.getElementById('navLinks');
+    nav.classList.toggle('open');
+}
+</script>
+
 </body>
 </html>
